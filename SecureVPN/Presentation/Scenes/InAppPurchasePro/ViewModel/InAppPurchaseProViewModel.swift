@@ -199,8 +199,7 @@ final class DefaultInAppPurchaseViewModel: InAppPurchaseViewModel {
                 default:
                     break
                 }
-            } catch
-            {
+            } catch {
                 DispatchQueue.main.async {
                     self.loadingType.value = .none
                     print("ERROR: " + error.localizedDescription)

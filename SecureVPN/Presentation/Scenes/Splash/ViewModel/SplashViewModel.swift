@@ -76,15 +76,6 @@ final class DefaultSplashViewModel: SplashViewModel {
     }
     
     @objc func deeplinkObserver(_ notification: Notification) {
-        /*guard let deeplinkSession = notification.object as? DeeplinkUserSession else { print("Invalid Deeplink Session"); return }
-        if var tempSession = session {
-            tempSession.deeplinkUser = deeplinkSession
-            session = tempSession
-            session?.logSession()
-            //updateUserSession()
-        } else {
-            print("User session Found nil, please be caution!")
-        }*/
         guard let deeplinkSession = notification.object as? UserSession else { print("Invalid Deeplink Session"); return }
         session = deeplinkSession
         session?.logSession()
@@ -117,55 +108,26 @@ extension DefaultSplashViewModel {
             switch result {
             case .success(let userSession):
                 guard let userSession = userSession else {return}
-                if userSession.deeplinkUser.isValidDeeplinkUser() && userSession.isProActive()
-                {
+                if userSession.deeplinkUser.isValidDeeplinkUser() && userSession.isProActive() {
                     self.route.value = .showDashboard
                 }
-                else if userSession.deeplinkUser.isValidDeeplinkUser()
-                {
+                else if userSession.deeplinkUser.isValidDeeplinkUser() {
                     self.route.value = .showBilling
                 }
-                else
-                {
+                else {
                     self.route.value = .showDashboard
                 }
             case .failure( _):
-                /*self.route.value = .showDashboard
-                return*/
-                DispatchQueue.global().asyncAfter(deadline: .now() + 6)
-                {
-                    if self.session == nil
-                    {
-                        self.route.value = .showDashboard
+                DispatchQueue.global().asyncAfter(deadline: .now() + 6) { [weak self] in
+                    if self?.session == nil {
+                        self?.route.value = .showDashboard
                     }
                 }
-                
-                
-                
-                
-                
-                /*if self.counter == 6
-                {
-                    self.route.value = .showDashboard
-                }
-                else
-                {
-                    DispatchQueue.global().asyncAfter(deadline: .now() + 1)
-                    {
-                        self.counter = self.counter + 1
-                        self.checkSession()
-                    }
-                }*/
-                /*DispatchQueue.global().asyncAfter(deadline: .now() + 6) {
-                    self.route.value = .showDashboard
-                }*/
             }
         }
     }
     
-    func didMove() {
-       
-    }
+    func didMove() {}
     
     func didFinishAnimation() {
         self.userSettingsUseCase.readCacheSettings { [weak self] _ in
@@ -178,9 +140,7 @@ extension DefaultSplashViewModel {
         print("received ad")
     }
     
-    func didFailToReceiveAd() {
-    }
+    func didFailToReceiveAd() {}
     
-    func didDismissScreenAd() {
-    }
+    func didDismissScreenAd() {}
 }

@@ -55,8 +55,7 @@ extension DefaultVPNRepository: DVPNRepository {
          vpnManager.loadPreferences(completion: completion)
     }
     
-    func getServers(completion: @escaping (Result<[Server], Error>) -> Void) -> Cancellable?
-    {
+    func getServers(completion: @escaping (Result<[Server], Error>) -> Void) -> Cancellable? {
         getListFromFB(completion: completion)
     }
 

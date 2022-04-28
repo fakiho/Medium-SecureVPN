@@ -258,8 +258,7 @@ final class DefaultDashboardViewModel: DashboardViewModel {
                 default:
                     self.loadingType.value = .none
                 }
-            } catch
-            {
+            } catch {
                 self.loadingType.value = .none
             }
         })
@@ -273,7 +272,7 @@ final class DefaultDashboardViewModel: DashboardViewModel {
                 let servers = try result.get()
                 activityType?.value = .none
                 serverList?.value = servers.sorted(by: { (s1, s2) -> Bool in
-                    if s1.top && !s2.top  {
+                    if s1.top && !s2.top {
                         //this will return true: s1 is top, s2 is not
                         return true
                     }

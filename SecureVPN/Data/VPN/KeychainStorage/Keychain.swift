@@ -180,8 +180,7 @@ open class KeychainWrapper {
             return nil
         }
         
-        do
-        {
+        do {
             return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(keychainData) as? NSCoding
         } catch {
             print("Couldn't read file.")

@@ -31,7 +31,6 @@ final class AppDIContainer {
     }()
     
     lazy var iTunesDataTransferService: DataTransferService = {
-        print(appConfigurations.iTunesURL)
         let config = ApiDataNetworkConfig(baseURL: URL(string: appConfigurations.iTunesURL)!)
         let apiDataNetwork = DefaultNetworkService(config: config)
         return DefaultDataTransferService(with: apiDataNetwork)

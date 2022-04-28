@@ -72,14 +72,12 @@ final class DefaultVPNManager: VPNRepository {
         protocolIKEv2.useExtendedAuthentication = true
         protocolIKEv2.localIdentifier = account.localID
         protocolIKEv2.remoteIdentifier = account.remoteID
-        if account.pskEnabled
-        {
+        if account.pskEnabled {
             protocolIKEv2.authenticationMethod = .sharedSecret
             protocolIKEv2.sharedSecretReference = account.getPSKRef()
             protocolIKEv2.passwordReference = account.getPasswordRef()
         }
-        else
-        {
+        else {
             protocolIKEv2.authenticationMethod = .none
         }
         protocolIKEv2.deadPeerDetectionRate = .medium

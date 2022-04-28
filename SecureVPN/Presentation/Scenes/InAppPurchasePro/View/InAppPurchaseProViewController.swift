@@ -104,10 +104,6 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
         return view
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        
-    }
-    
     private var products: [SKProduct] = []
     private var subscriptionType: PurchaseType = .none
     override func viewDidLoad() {
@@ -139,7 +135,6 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
             break
             
         case .back:
-            //self.dismiss(animated: true, completion: nil)
             let dashboard = inAppPurchaseViewControllersFactory.makeDashboardViewController()
             dashboard.modalPresentationStyle = .fullScreen
             self.present(dashboard, animated: true, completion: nil)
@@ -147,39 +142,31 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
         }
     }
     
-    private func handleProducts(_ products: [SKProduct])
-    {
+    private func handleProducts(_ products: [SKProduct]) {
         self.subscriptionViewArray.removeAll()
-        for subview in self.stackView.arrangedSubviews
-        {
+        for subview in self.stackView.arrangedSubviews {
             subview.removeFromSuperview()
         }
         self.products.removeAll()
         self.products = products
         let deeplinkURL = UserDefaults.standard.object(forKey: "deeplinkURL") as? String
         var productList = [String]()
-        if (deeplinkURL != nil)
-        {
+        if (deeplinkURL != nil) {
             let deeplink = URL(string: deeplinkURL!)
-            if let queryParam = deeplink?.queryDictionary
-            {
+            if let queryParam = deeplink?.queryDictionary {
                 //handleParam here
-                if let products = queryParam["inappProducts"] as? String
-                {
+                if let products = queryParam["inappProducts"] as? String {
                     productList = products.components(separatedBy: "-")
                 }
             }
         }
-        if self.products.count > 0 && productList.count > 0
-        {
-            for period in productList
-            {
+        if self.products.count > 0 && productList.count > 0 {
+            for period in productList {
                 let filteredProducts = self.products.filter { $0.productIdentifier.contains(period) }
                 let product = filteredProducts.first
                 let view = SubscriptionPeriodView.instanceFromNib()
                 view.setContent(product: product!)
                 view.buttonAction = { [weak self] in
-                    print("button tapped")
                     self?.didUnSelectAll()
                     view.didSelect()
                     self!.didSelect(product!)
@@ -190,14 +177,11 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
                 self.stackView.addArrangedSubview(view)
             }
         }
-        else if self.products.count > 0
-        {
-            for product in self.products
-            {
+        else if self.products.count > 0 {
+            for product in self.products {
                 let view = SubscriptionPeriodView.instanceFromNib()
                 view.setContent(product: product)
                 view.buttonAction = { [weak self] in
-                    print("button tapped")
                     self?.didUnSelectAll()
                     view.didSelect()
                     self!.didSelect(product)
@@ -209,19 +193,15 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
             }
         }
     }
-    
+
     private func handleLoading(_ loading: InAppPurchaseViewModelLoading) {
         switch loading {
         case .none:
-            print("None")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                self.stopActivityIndicator()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+                self?.stopActivityIndicator()
             }
             break
         case .purchased:
-            /*showAlert(title: "Purchases", message: self.viewModel.message.value, style: .alert, completion: nil) { _ in
-                self.dismiss(animated: true, completion: nil)
-            }*/
             break
         case .purchasing:
             self.startActivityIndicator()
@@ -230,16 +210,12 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
             self.startActivityIndicator()
             break
         case .restored:
-            //showAlert(title: "Purchases", message: self.viewModel.message.value, style: .alert, completion: nil) { _ in }
             break
         case .restoring:
-            /*showAlert(title: "Purchases", message: self.viewModel.message.value, style: .alert, completion: nil) { _ in
-                self.dismiss(animated: true, completion: nil)
-            }*/
             break
         }
     }
-      
+
     private func setupAnimation() {
         animationView.contentMode = .scaleAspectFit
         animationContainer.addSubview(animationView)
@@ -253,7 +229,7 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
             animationView.bottomAnchor.constraint(equalTo: animationContainer.layoutMarginsGuide.bottomAnchor)
         ])
     }
-    
+
     private func startAnimating(animation: Animation? = Animation.named("purchaseAnimation"), loop: LottieLoopMode = .loop, _ completion: (() -> Void)? = nil) {
         animationView.animation = animation
         
@@ -269,69 +245,33 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
                             }
         })
     }
-    
-    /*@IBOutlet weak var productSection: UISegmentedControl! {
-        didSet {
-            productSection.removeAllSegments()
-            
-            if #available(iOS 13, *) {
-                let titleTextAttributes = [NSAttributedString.Key.foregroundColor: Colors.mainPurpleColor]
-                
-                let unselectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: Colors.lightGray]
-                
-                productSection.setTitleTextAttributes(unselectedTitleTextAttributes, for: .normal)
-                productSection.setTitleTextAttributes(titleTextAttributes, for: .selected)
-            } else {
-                productSection.layer.cornerRadius = 10
-                let titleTextAttributes = [NSAttributedString.Key.foregroundColor: Colors.white]
-                
-                let unselectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: Colors.lightGray]
-                
-                productSection.setTitleTextAttributes(unselectedTitleTextAttributes, for: .normal)
-                productSection.setTitleTextAttributes(titleTextAttributes, for: .selected)
-            }
-        }
-    }*/
-    
-    /*@IBAction func productSectionAction(_ sender: UISegmentedControl) {
-       didSelectProductFrom(sender)
-    }*/
-    
-    @IBAction func productSectionAction(_ sender: UIButton)
-    {
+
+    @IBAction func productSectionAction(_ sender: UIButton) {
         didSelectProductFrom(sender)
     }
-    
-    private func didSelect(_ product: SKProduct)
-    {
+
+    private func didSelect(_ product: SKProduct) {
         subscribeButton.isEnabled = true
-        if product.productIdentifier.contains("weekly")
-        {
+        if product.productIdentifier.contains("weekly") {
             subscriptionType = .week
         }
-        else if product.productIdentifier.contains("monthly")
-        {
+        else if product.productIdentifier.contains("monthly") {
             subscriptionType = .month
         }
-        else if product.productIdentifier.contains("yearly")
-        {
+        else if product.productIdentifier.contains("yearly") {
             subscriptionType = .year
         }
     }
-    
-    private func didUnSelectAll()
-    {
-        for view in subscriptionViewArray
-        {
+
+    private func didUnSelectAll() {
+        for view in subscriptionViewArray {
             view.didUnselect()
         }
     }
-    
-    private func didSelectProductFrom(_ sender: UIButton)
-    {
+
+    private func didSelectProductFrom(_ sender: UIButton) {
         subscribeButton.isEnabled = true
-        switch sender.tag
-        {
+        switch sender.tag {
         case 0:
             subscriptionType = .week
             weeklyView.backgroundColor = UIColor.white
@@ -361,77 +301,49 @@ class InAppPurchaseProViewController: UIViewController, StoryboardInstantiable, 
         }
     }
 
-    /*private func didSelectProductFrom(_ sender: UISegmentedControl) {
-        subscribeButton.isEnabled = true
-        var title: String = ""
-        switch sender.titleForSegment(at: sender.selectedSegmentIndex) {
-        case "1 Day":
-           title = "Subscribe (\(products[sender.selectedSegmentIndex].localizedPrice)/day)"           
-        case "1 Week":
-           title = "Subscribe (\(products[sender.selectedSegmentIndex].localizedPrice)/week)"
-           subscriptionType = .week
-        case "1 Month":
-           title = "Subscribe (\(products[sender.selectedSegmentIndex].localizedPrice)/month)"
-           subscriptionType = .month
-        case "1 Year":
-           title = "Subscribe (\(products[sender.selectedSegmentIndex].localizedPrice)/year)"
-           subscriptionType = .year
-        default:
-           break
-        }
-        self.subscribeButton.setTitle(title, for: .normal)
-    }*/
- 
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = Fonts.titleMediumFont
             titleLabel.textColor = Colors.black
         }
     }
-    
+
     @IBOutlet weak var subtitleLabel: UILabel! {
         didSet {
             subtitleLabel.font = Fonts.subtitleRegularFont
             subtitleLabel.textColor = Colors.darkGray
         }
     }
-    
+
     @IBOutlet weak var featuresButton: UIButton! {
         didSet {
             featuresButton.titleLabel?.font = Fonts.subtitleRegularFont
             featuresButton.setTitleColor(Colors.blueColor, for: .normal)
         }
     }
-    
-    @IBAction func featuresAction(_ sender: UIButton) {
-    }
-    
+
+    @IBAction func featuresAction(_ sender: UIButton) {}
+
     @IBOutlet weak var warningLabel: UILabel! {
         didSet {
             warningLabel.font = Fonts.subtitleRegularFont
             warningLabel.textColor = Colors.darkGray
         }
     }
-    
+
     @IBOutlet weak var subscribeButton: UIButton! {
         didSet {
-            //subscribeButton.titleLabel?.font = Fonts.boldFont
-            //subscribeButton.backgroundColor = Colors.systemPurple
-            //subscribeButton.setTitle("Subscribe", for: .normal)
             subscribeButton.isEnabled = true
-            //subscribeButton.setTitleColor(Colors.white, for: .normal)
             subscribeButton.addTarget(self, action: #selector(subscribe), for: .touchUpInside)
         }
     }
-    
+
     @objc
-    private func subscribe()
-    {
+    private func subscribe() {
         viewModel.userDidPurchase(with: subscriptionType)
     }
 }
 private extension SKProduct {
-    
     static var formatter: NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
@@ -451,8 +363,7 @@ private extension SKProduct {
     }
 }
 
-protocol InAppPurchaseViewControllersFactory
-{
+protocol InAppPurchaseViewControllersFactory {
     func makeDashboardViewController() -> UIViewController
 }
 

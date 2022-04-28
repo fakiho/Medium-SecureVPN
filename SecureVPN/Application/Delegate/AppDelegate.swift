@@ -21,12 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var notificationUseCase = appDIContainer.makeVPNSceneDIContainer().makeNotificationUseCase()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        //let gpsadid = ASIdentifierManager.shared().advertisingIdentifier.uuidString
-        //print("AdvertisingId: " + (gpsadid))
         BugShaker.configure(to: [""], subject: "Bug Report")
         AppAppearance.setupAppearance()
-        FirebaseApp.configure()
+        //MARK: - YOU need a firbase config file
+        // FirebaseApp.configure()
         UNUserNotificationCenter.current().delegate = self
         setupFirebaseNotification(application: application)
         application.registerForRemoteNotifications()
@@ -40,16 +38,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             for purchase in purchases {
                switch purchase.transaction.transactionState {
                case .purchased, .restored:
-                   if purchase.needsFinishTransaction
-                   {
+                   if purchase.needsFinishTransaction {
                        // Deliver content from server, then:
                        SwiftyStoreKit.finishTransaction(purchase.transaction)
                    }
                    // Unlock content
                case .failed, .purchasing, .deferred:
-                   break // do nothing
+                   break
                @unknown default:
-                fatalError()
+                   fatalError()
                 }
             }
         }
@@ -141,7 +138,6 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("tap")
         completionHandler()
     }
     
@@ -159,7 +155,6 @@ extension AppDelegate: MessagingDelegate, UNUserNotificationCenterDelegate {
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print(error)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, 

@@ -34,8 +34,7 @@ extension DefaultInAppPurchaseUseCase: InAppPurchaseUseCase {
     }
 
     
-    public func buyProduct(_ product: ProductIdentifier)
-    {
+    public func buyProduct(_ product: ProductIdentifier) {
         SwiftyStoreKit.purchaseProduct(product, atomically: true) { (result) in
             if case .success(let purchase) = result {
                 if purchase.needsFinishTransaction {

@@ -69,7 +69,6 @@ final class AppConfiguration
         guard let secretKey = Bundle.main.object(forInfoDictionaryKey: "SharedSecretKey") as? String else {
             fatalError("provide shared secret key")
         }
-        print(secretKey)
         return secretKey
     }()
     

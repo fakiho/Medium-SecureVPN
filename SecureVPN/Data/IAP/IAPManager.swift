@@ -100,8 +100,7 @@ extension IAPManager {
 // MARK: - SKPaymentTransactionObserver
 extension IAPManager
 {
-    public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction])
-    {
+    public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchasing:

@@ -22,45 +22,36 @@ class SubscriptionPeriodView: UIView {
         // Initialization code
     }
     
-    class func instanceFromNib() -> SubscriptionPeriodView
-    {
+    class func instanceFromNib() -> SubscriptionPeriodView {
         return  UINib(nibName: "SubscriptionPeriodView", bundle: nil).instantiate(withOwner: self, options: nil).first as! SubscriptionPeriodView
     }
     
-    func setContent(product: SKProduct)
-    {
-        if product.productIdentifier.contains("weekly")
-        {
+    func setContent(product: SKProduct) {
+        if product.productIdentifier.contains("weekly") {
             self.periodLabel.text = "Weekly"
         }
-        else if product.productIdentifier.contains("monthly")
-        {
+        else if product.productIdentifier.contains("monthly") {
             self.periodLabel.text = "Monthly"
         }
-        else if product.productIdentifier.contains("yearly")
-        {
+        else if product.productIdentifier.contains("yearly") {
             self.periodLabel.text = "Yearly"
         }
         
         self.priceLabel.text = "\(product.localizedPrice ?? "")"
     }
     
-    func didSelect()
-    {
+    func didSelect() {
         self.backgroundColor = UIColor.white
         self.layer.borderWidth = 3
     }
     
-    func didUnselect()
-    {
+    func didUnselect() {
         self.backgroundColor = UIColor.init(red: 199.0/255.0, green: 199/255.0, blue: 204/255.0, alpha: 1.0)
         self.layer.borderWidth = 0
     }
     
-    @IBAction func productSectionAction(_ sender: UIButton)
-    {
-        if let buttonAction = self.buttonAction
-        {
+    @IBAction func productSectionAction(_ sender: UIButton) {
+        if let buttonAction = self.buttonAction {
             buttonAction()
         }
     }

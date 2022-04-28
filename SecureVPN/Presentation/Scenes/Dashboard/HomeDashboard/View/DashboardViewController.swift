@@ -101,8 +101,7 @@ class DashboardViewController: UIViewController, StoryboardInstantiable, Alertab
         }
     }
 
-    @IBAction func dis_ConnectStatusAction(_ sender: UIButton)
-    {
+    @IBAction func dis_ConnectStatusAction(_ sender: UIButton) {
         if (!self.isShowingListServer) {
             self.viewModel.connectDisconnect()
         }
@@ -166,34 +165,33 @@ class DashboardViewController: UIViewController, StoryboardInstantiable, Alertab
         
     }
     
-    private func handleServerList(_ servers: [Server])
-    {
+    private func handleServerList(_ servers: [Server]) {
         let vpnAccount = Configuration.loadFromDefaults()
-        if !vpnAccount.server.isEmpty
-        {
-            self.viewModel.vpnAccount.value = Configuration(server: vpnAccount.server,
-                                                            country: vpnAccount.country,
-                                                            pro: vpnAccount.pro,
-                                                            account: vpnAccount.account!,
-                                                            password: vpnAccount.password,
-                                                            description: vpnAccount.description,
-                                                            remoteID: vpnAccount.remoteID,
-                                                            localID: vpnAccount.localID,
-                                                            certificate:vpnAccount.certificate, top:vpnAccount.top, adjustToken:vpnAccount.adjustToken)
+        if !vpnAccount.server.isEmpty {
+            self.viewModel.vpnAccount.value = Configuration(
+                server: vpnAccount.server,
+                country: vpnAccount.country,
+                pro: vpnAccount.pro,
+                account: vpnAccount.account!,
+                password: vpnAccount.password,
+                description: vpnAccount.description,
+                remoteID: vpnAccount.remoteID,
+                localID: vpnAccount.localID,
+                certificate:vpnAccount.certificate, top:vpnAccount.top, adjustToken:vpnAccount.adjustToken)
             downloadImage(from: URL(string: "\(AppConfiguration().flagApi)\(vpnAccount.country)")!)
             self.vpnTitleLabel.text = vpnAccount.description
         }
-        else if let server = servers.first
-        {
-            self.viewModel.vpnAccount.value = Configuration(server: server.server,
-                                                            country: server.country,
-                                                            pro: server.pro,
-                                                            account: server.account,
-                                                            password: server.password,
-                                                            description: server.serverDescription,
-                                                            remoteID: server.remoteId,
-                                                            localID: server.localId,
-                                                            certificate:server.certificate, top: server.top, adjustToken: server.adjustToken)
+        else if let server = servers.first {
+            self.viewModel.vpnAccount.value = Configuration(
+                server: server.server,
+                country: server.country,
+                pro: server.pro,
+                account: server.account,
+                password: server.password,
+                description: server.serverDescription,
+                remoteID: server.remoteId,
+                localID: server.localId,
+                certificate:server.certificate, top: server.top, adjustToken: server.adjustToken)
             downloadImage(from: URL(string: "\(AppConfiguration().flagApi)\(server.country)")!)
             self.vpnTitleLabel.text = server.serverDescription
         }
@@ -203,10 +201,8 @@ class DashboardViewController: UIViewController, StoryboardInstantiable, Alertab
         self.currentIPLabel.text = newIP
     }
     
-    private func handleVPNSelection(_ vpnAccount: VPNAccount?)
-    {
-        if vpnAccount != nil
-        {
+    private func handleVPNSelection(_ vpnAccount: VPNAccount?) {
+        if vpnAccount != nil {
             downloadImage(from: URL(string: "\(AppConfiguration().flagApi)\(vpnAccount!.country)")!)
             self.vpnTitleLabel.text = vpnAccount?.description
         }
@@ -230,10 +226,8 @@ class DashboardViewController: UIViewController, StoryboardInstantiable, Alertab
     
     private func handlePurchaseStatus(_ status: Bool?) {
         guard let status = status else { return }
-//        if status { return }
         UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCurlUp, animations: {
             self.proStatusImageView.image = status ? Images.statusPro : Images.statusNotPro
-            //self.subscribeContainer.isHidden = status
             self.bannerView.isHidden = status
         })
     }
@@ -303,8 +297,7 @@ class DashboardViewController: UIViewController, StoryboardInstantiable, Alertab
             
         case .showServers(let delegate):
             guard let view = view else { return }
-            if self.viewModel.serverList.value.count > 0 && !isShowingListServer
-            {
+            if self.viewModel.serverList.value.count > 0 && !isShowingListServer {
                 let vc = serverListViewController ?? dashboardFactory.makeServerListViewController(delegate: delegate, servers: self.viewModel.serverList.value)
                 add(child: vc, container: serverListContainer)
                 vc.view.frame = view.bounds

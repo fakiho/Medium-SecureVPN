@@ -25,8 +25,7 @@ class ServerListViewController: UIViewController, StoryboardInstantiable {
     private var vpnServers: [Server] = [] {
         didSet {
             self.tableView.reloadData()
-            if self.vpnServers.count > 0
-            {
+            if self.vpnServers.count > 0 {
                 self.loaderView.isHidden = true
             }
         }
@@ -75,31 +74,17 @@ class ServerListViewController: UIViewController, StoryboardInstantiable {
         bind(viewModel)
     }
     
-    private func bind(_ viewModel: ServerListViewModel)
-    {
-        /*self.vpnServers = viewModel.items.value
-         if self.vpnServers.count > 0
-         {
-         self.loaderView.isHidden = true
-         }*/
-        /*viewModel.items.observe(on: self, observerBlock: {[weak self] in self?.vpnServers = $0.sorted(by: { $0.description < $1.description })
-        })*/
+    private func bind(_ viewModel: ServerListViewModel) {
         viewModel.items.observe(on: self, observerBlock: {[weak self] in self?.vpnServers = $0 })
     }
 }
 
-extension ServerListViewController: UISearchBarDelegate
-{
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar)
-    {
-    }
+extension ServerListViewController: UISearchBarDelegate {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {}
     
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar)
-    {
-    }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {}
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar)
-    {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
         
         searchBar.text = nil
@@ -109,26 +94,21 @@ extension ServerListViewController: UISearchBarDelegate
         tableView.reloadData()
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)
-    {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
     
-    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool
-    {
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
         return true
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
-        if searchText.isEmpty
-        {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
             self.searchActive = false;
             self.searchBar.showsCancelButton = false
             self.filteredServers = []
         }
-        else
-        {
+        else {
             self.searchActive = true;
             self.searchBar.showsCancelButton = true
             self.filteredServers = vpnServers.filter { $0.serverDescription.localizedCaseInsensitiveContains(searchText) }
@@ -141,26 +121,21 @@ extension ServerListViewController: UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if searchActive
-        {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchActive {
             return self.filteredServers.count
         }
         return self.vpnServers.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: VPNViewCell.identifier) as? VPNViewCell else { fatalError() }
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
-        if searchActive
-        {
+        if searchActive {
             cell.fillWith(configuration: filteredServers[indexPath.row])
         }
-        else
-        {
+        else {
             cell.fillWith(configuration: vpnServers[indexPath.row])
         }
         return cell
@@ -170,14 +145,11 @@ extension ServerListViewController: UITableViewDelegate, UITableViewDataSource {
         return 70
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-    {
-        if searchActive
-        {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if searchActive {
             self.viewModel.didSelect(item: filteredServers[indexPath.row].toVPNAccount())
         }
-        else
-        {
+        else {
             self.viewModel.didSelect(item: vpnServers[indexPath.row].toVPNAccount())
         }
     }

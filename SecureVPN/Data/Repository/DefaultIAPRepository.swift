@@ -42,128 +42,40 @@ extension DefaultIAPRepository: IAPRepository {
         self.manager.restorePurchase()
     }
     
-    func receiptValidation(completion: @escaping ValidatePurchaseCompletion) -> Cancellable?
-    {
+    func receiptValidation(completion: @escaping ValidatePurchaseCompletion) -> Cancellable? {
         let operation: OperationQueue = OperationQueue()
         operation.addOperation {
             let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: AppConfiguration().sharedSecretKey)
             SwiftyStoreKit.verifyReceipt(using: appleValidator) { [self] result in
                 if case .success(let receipt) = result {
-                    /*guard let latest_receipt_info = receipt["latest_receipt_info"] as? [Dictionary<String, Any>]
-                    else {
-                        completion(.failure(NSError(domain: "malformed data", code: 0, userInfo: nil)))
-                        return
-                    }*/
                     var productIdentifier = ""
-                    for item in IAPConfiguration().productIdentifiers
-                    {
-                        if self.manager.isProductPurchased(item)
-                        {
+                    for item in IAPConfiguration().productIdentifiers {
+                        if self.manager.isProductPurchased(item) {
                             productIdentifier = item
                             break
                         }
                     }
-                    //let productIdentifier = latest_receipt_info[0]["product_id"] as! String
                     let purchaseResult = SwiftyStoreKit.verifySubscription(ofType: .autoRenewable,productId: productIdentifier,inReceipt: receipt)
-                    //self.loadType.value = .done
                     switch purchaseResult {
                     case .purchased(let expiryDate, let items):
-                        /*print("Product is valid until \(expiryDate)")
-                        let userDef = UserDefaults.standard
-                        userDef.set(true, forKey: "TODO:productIdentifier")
-                        guard var tempUser = self.user else { self.error.value = "Invalid"; self.loadType.value = .done; return }
-                        tempUser.isPremiumIAP = true
-                        tempUser.productIdentifier = self.productIdentifier
-                        tempUser.productIDPurchased = self.productIdentifier
-                        tempUser.expireDate = expiryDate
-                        self.updateUser(user: tempUser)
-                        self.loadType.value = .done
-                        self.route.value = .showHome
-                        completion()*/
-                        for item in items
-                        {
-                            if self.isCurrentSubscriptionActive(expiryDate: item.subscriptionExpirationDate!)
-                            {
+
+                        for item in items {
+                            if self.isCurrentSubscriptionActive(expiryDate: item.subscriptionExpirationDate!) {
                                 completion(.success(.restoreSuccessfully(id: item.productId, expireDate: expiryDate, originDate: item.originalPurchaseDate)))
                                 break
                             }
                         }
                     case .expired( _, _):
-                        /*print("Product is expired since \(expiryDate)")
-                        self.loadType.value = .done
-                        self.loadUser()
-                        self.error.value = "Your Subscription expired"
-                        completion()*/
                         completion(.success(.expire))
                     case .notPurchased:
-                        /*self.error.value = "No Subscription found"
-                        print("This product has never been purchased")*/
                         completion(.failure(NSError(domain: "No Subscription found", code: 0, userInfo: nil)))
                     }
-
                 }
             }
             return
         }
         return RepositoryTask(networkTask: nil, operation: operation)
     }
-    /*{
-        let operation: OperationQueue = OperationQueue()
-        operation.addOperation {
-            var isReceiptPresent = false
-            do {
-                let appStoreReceiptURL = Bundle.main.appStoreReceiptURL
-                try _ = Data(contentsOf: appStoreReceiptURL!)
-            } catch {
-                print(error.localizedDescription)
-                sleep(arc4random() / 4)
-                self.manager.refreshReceipt {
-                    _  = self.receiptValidation(completion: completion)
-                }
-            }
-            
-            if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
-                let receiptData = try? Data(contentsOf: appStoreReceiptURL) {
-                do {
-                    
-                    try isReceiptPresent = appStoreReceiptURL.checkResourceIsReachable()
-                    print(isReceiptPresent)
-                    print(receiptData)
-
-                    if isReceiptPresent {
-                        let receiptString = receiptData.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-
-                        let jsonDict: [String: Any] = ["receipt-data" : receiptString, "password": AppConfiguration().sharedSecretKey, "exclude-old-transactions" : true] as [String : Any]
-                        do {
-                            let requestData = try JSONSerialization.data(withJSONObject: jsonDict, options: .prettyPrinted)
-                            guard let storeURL = URL(string: "\(AppConfiguration().iTunesURL)/verifyReceipt")
-                            else {
-                                completion(.failure(NSError(domain: "Invalid URL", code: 0, userInfo: nil)))
-                                return
-                            }
-                            var storeRequest = URLRequest(url: storeURL)
-                            storeRequest.httpMethod = "POST"
-                            storeRequest.httpBody = requestData
-                            
-                            let session = URLSession(configuration: URLSessionConfiguration.default)
-                            let task = session.dataTask(with: storeRequest) { (data, _, error) in
-                                do {
-                                    guard let data = data else { return }
-                                    let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-                                    guard let nsResponse = jsonResponse as? NSDictionary else { return }
-                                    self.parseJSONDataResponse(jsonResponse: nsResponse, completion: completion)
-                                } catch { completion(.failure(error))}
-                            }
-                            task.resume()
-                        } catch { completion(.failure(error))}
-                    }
-                            
-                } catch {  completion(.failure(error)) }
-            
-            }
-        }
-        return RepositoryTask(networkTask: nil, operation: operation)
-    }*/
 
     func parseJSONDataResponse(jsonResponse: NSDictionary, completion: @escaping ValidatePurchaseCompletion) {
         var currentIsActive = false
@@ -171,7 +83,6 @@ extension DefaultIAPRepository: IAPRepository {
         var productId: String = ""
         var currentTimeZDate: Date?
         guard let status = jsonResponse["status"] as? Int else { completion(.failure(NSError(domain: "receipt-data property was malformed", code: 0, userInfo: nil))); return}
-        print(status)
         switch status {
             // The request to the App Store was not made using the HTTP POST request method.
         case 21000:
@@ -215,7 +126,6 @@ extension DefaultIAPRepository: IAPRepository {
             }
 
             for latestDetails in latestReceiptInfo {
-                print(latestDetails)
                 if let originalTimeZ = latestDetails["original_purchase_date"],
                    let currentTimeZ = latestDetails["purchase_date"],
                    let productIdTemp = latestDetails["product_id"] as? String,
