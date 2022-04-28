@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kBu-uQ-D4z">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Notification View Controller-->
+        <scene sceneID="mLn-y8-URI">
+            <objects>
+                <viewController id="kBu-uQ-D4z" customClass="NotificationViewController" customModule="Secure_VPN" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fgL-gw-arM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XaE-7S-SR8">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" red="0.00071524269880000001" green="0.01007604692" blue="0.078438363969999994" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="OFl-ko-wv1">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="113"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Logs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mec-O5-xZx">
+                                            <rect key="frame" x="8" y="85" width="96.5" height="20"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.00071524269880000001" green="0.01007604692" blue="0.078438363969999994" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="mec-O5-xZx" secondAttribute="bottom" constant="8" id="2lb-hk-Pex"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mec-O5-xZx" secondAttribute="trailing" constant="8" id="EPd-hX-PCa"/>
+                                        <constraint firstItem="mec-O5-xZx" firstAttribute="leading" secondItem="OFl-ko-wv1" secondAttribute="leading" constant="8" id="SMU-qV-Etc"/>
+                                    </constraints>
+                                </view>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="lny-xh-Xdl">
+                                    <rect key="frame" x="0.0" y="212.5" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.00071524269880000001" green="0.01007604692" blue="0.078438363969999994" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NotificationCell" id="EHZ-YM-H9f" customClass="NotificationCell" customModule="Secure_VPN" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="141" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EHZ-YM-H9f" id="Tdo-xn-i9t">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.00071524269880000001" green="0.01007604692" blue="0.078438363969999994" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.00071524269880000001" green="0.01007604692" blue="0.078438363969999994" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="GRw-P7-Qgt" firstAttribute="bottom" secondItem="XaE-7S-SR8" secondAttribute="bottom" id="5fy-te-WNQ"/>
+                            <constraint firstItem="XaE-7S-SR8" firstAttribute="leading" secondItem="GRw-P7-Qgt" secondAttribute="leading" id="KJY-bD-f8e"/>
+                            <constraint firstItem="XaE-7S-SR8" firstAttribute="top" secondItem="GRw-P7-Qgt" secondAttribute="top" id="dtq-Sc-Buc"/>
+                            <constraint firstItem="GRw-P7-Qgt" firstAttribute="trailing" secondItem="XaE-7S-SR8" secondAttribute="trailing" id="x1z-ib-xAp"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="GRw-P7-Qgt"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="XaE-7S-SR8" id="oWf-EP-8cB"/>
+                        <outlet property="titleLabel" destination="mec-O5-xZx" id="OEL-wm-d5h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mQo-EB-FP9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="103.79464285714285"/>
+        </scene>
+    </scenes>
+</document>

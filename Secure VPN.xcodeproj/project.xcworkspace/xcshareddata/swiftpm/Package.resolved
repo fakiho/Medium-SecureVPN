@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AFNetworks",
+        "repositoryURL": "https://github.com/afdetails/AFNetwork.git",
+        "state": {
+          "branch": null,
+          "revision": "2925086557866d386411a5a6cc8a0a092218f405",
+          "version": "1.0.3"
+        }
+      },
+      {
+        "package": "IPAPI",
+        "repositoryURL": "https://github.com/arturgrigor/IPAPI.git",
+        "state": {
+          "branch": null,
+          "revision": "c8f8d715074882cf9dcaae2e2889b415db71c0c8",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "KeychainAccess",
+        "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess.git",
+        "state": {
+          "branch": null,
+          "revision": "b920ad7df3c73189dcdd4aa05c540849b2010dbf",
+          "version": "4.1.0"
+        }
+      },
+      {
+        "package": "Lottie",
+        "repositoryURL": "https://github.com/airbnb/lottie-ios.git",
+        "state": {
+          "branch": null,
+          "revision": "8f81de8d81da8631fd95ff81a9db133b76e13ea4",
+          "version": "3.1.6"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,25 @@
+/*
+  Localizable.strings
+  VPN Guard
+
+  Created by Ali Fakih on 5/22/20.
+  Copyright © 2020 beApp. All rights reserved.
+*/
+/*
+"Tap To Connect" = "Tap To Connect";
+"Connecting" = "Connecting";
+"Tap to disconnect" = "Tap to disconnect";
+"Disconnecting" = "Disconnecting";
+"Current IP" = "Current IP";
+"Select Country" = "Select Country";
+"Subscribe to enjoy fast speeds and firewall protection on." = "Subscribe to enjoy fast speeds and firewall protection on.";
+"Subscribe" = "Subscribe";
+"Subscribe to Secure VPN" = "Subscribe to Secure VPN";
+"Block Trackers and other digital nuisances while enjoying fast VPN connection speeds" = "Block Trackers and other digital nuisances while enjoying fast VPN connection speeds";
+"See all features" = "See all features;
+"Secure VPN PRO" = "Secure VPN PRO";
+"Terms of Service" = "Terms of Service";
+"Privacy" = "Privacy";
+"All subscription are auto-renewed but can be cancelled before renewal." = "All subscription are auto-renewed but can be cancelled before renewal.";"
+"Restore Purchase" = "Restore Purchase";
+*/
