@@ -21,7 +21,8 @@ When we develop software, it is important not only to use design patterns but al
 In Mobile software engineering, the most widely used are MVVM, Clean architecture, and Redux patterns
 ![image](https://user-images.githubusercontent.com/18246787/165736486-3471cfe7-e646-414d-b82a-62f89fd832b5.png)
 
-## Architecture concepts used here
+## Architecture concepts used here 📚
+
 Clean Architecture https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 
 Advanced iOS App Architecture https://www.raywenderlich.com/8477-introducing-advanced-ios-app-architecture
@@ -52,6 +53,10 @@ When the npm installation is finished run the setup command
 ```bash
 $ make pods_install
 ```
+## Build
+You will need to add the keys to make sure the project successfully launched
+<img src="Readme/project-keys.png">
+
 fastlane documentation
 ----
 
